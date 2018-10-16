@@ -1,1 +1,2 @@
-homework for complex network analysis
+Welcome!
+The reporsitory is used for homework of complex network analysis.
