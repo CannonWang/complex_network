@@ -49,7 +49,7 @@ for m=1:N
 end
 
 %»­³öN¸öµã
-plot(position(:,1),position(:,2),'*')
+plot(position(:,1),position(:,2),'o')
 hold on
 for i=1:N
     for j=i:N
