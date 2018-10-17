@@ -1,6 +1,7 @@
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
+import math
 import random
 
 
@@ -47,7 +48,7 @@ def create_graph(matrix):
 
 N = 100
 degree = 4
-break_p = 0.5
+# break_p = 0.5
 
 # connection = creat_matrix(N, degree)
 # # print(connection)
@@ -60,19 +61,53 @@ break_p = 0.5
 D_buf = []
 C_buf = []
 
-p_buf = [0,0.0001,0.00025,0.0005,0.001,0.002,0.004,0.008,0.018,0.03,0.065,0.13,0.25,0.5]
-for i in p_buf:
-    # break_p = float(i/200)
-    connection = creat_matrix(N, degree)
-    reconnection = reconnect(connection, i)
-    G = create_graph(reconnection)
+p_buf = []
+for i in np.arange(-4, 0, .5):
+    p_buf.append(math.pow(10, i))
 
-    D_buf.append(nx.average_shortest_path_length(G))
-    C_buf.append(nx.average_clustering(G))
-    print(i)
+print("p_buf: ", p_buf)
 
-plt.plot(range(14), D_buf, color = 'red')
-plt.plot(range(14), C_buf, color = 'blue')
+
+connection = creat_matrix(N, degree)
+G = create_graph(connection)
+
+D_0 = nx.average_shortest_path_length(G)
+C_0 = nx.average_clustering(G)
+
+for p in p_buf:
+    sum_d = 0
+    sum_c = 0
+    repeat = 10
+    for i in range(repeat):
+        connection = creat_matrix(N, degree)
+        reconnection = reconnect(connection, p)
+        G = create_graph(reconnection)
+        
+        d = nx.average_shortest_path_length(G)
+        sum_d = sum_d + d
+
+        c = nx.average_clustering(G)
+        sum_c = sum_c + c
+        
+    D_buf.append(sum_d/repeat)
+    C_buf.append(sum_c/repeat)
+
+    print(p)
+
+D_rate = []
+C_rate = []
+for i in D_buf:
+    D_rate.append((D_buf[i])/D_0)
+    C_rate.append((C_buf[i])/C_0)
+
+
+
+# print(D_buf[0])
+# print(C_buf[0])
+
+
+plt.semilogx(p_buf, D_rate, color = 'red')
+plt.semilogx(p_buf, C_rate, color = 'blue')
 
 plt.show()
 # pos = nx.circular_layout(G)
