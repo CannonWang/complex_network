@@ -7,7 +7,7 @@ function [c d] = calculate(p)
 % Long description
 
 
-N=500;
+N=300;
 degree = 6;
 % break_p = [0, power(10,(-4:0.1:0)), 1];
 
