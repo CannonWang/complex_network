@@ -1,13 +1,15 @@
-clear;
-clc;
+function [c d] = calculate(p)
 
-N=100;
-degree = 4;
-break_p = power(10,(-4:0.5:0));
+%myFun - Description
+%
+% Syntax: output = myFun(input)
+%
+% Long description
 
-list_d = 1;
-list_c = 1;
 
+N=500;
+degree = 6;
+% break_p = [0, power(10,(-4:0.1:0)), 1];
 
 connection = zeros(N,N);
 for i = 1:degree/2
@@ -16,7 +18,6 @@ end
 
 reconnection = connection .*rand(N,N);
 
-p = 0.5;
 for row = 1:N-1
     for column = row+1:N
         if((reconnection(row, column) > 0) && (reconnection(row, column) < p))
@@ -59,7 +60,7 @@ for k=1:N       %Floyd算法求解任意两点的最短距离
 D(k,k)=0;
 end
 D(find(D==inf))=0;
-average_shortest_path_length =(sum(D(:))/2)/(N*(N-1)/2)
+average_shortest_path_length =(sum(D(:))/2)/(N*(N-1)/2);
 
 
 %求一个网络的平均集聚系数：所有节点的CC之和/节点数目
@@ -87,8 +88,10 @@ for k=1:N
     a_CC(k)=sum_CC(k)/((num_k)*(num_k-1)/2);    
     end
 end
-ave_CC = sum(a_CC)/N
+ave_CC = sum(a_CC)/N;
 
+c = ave_CC;
+d = average_shortest_path_length;
 
 
 
